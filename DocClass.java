@@ -8,6 +8,10 @@ package github.com.ricallinson.jmmdoc;
 
 import github.com.ricallinson.http.io.BufferedInputStreamReader;
 
+// Container for class documentation.
+// ```
+// new DocClass();
+// ```
 public class DocClass {
 
     // The source file.
@@ -43,18 +47,20 @@ public class DocClass {
         this.parse();
     }
 
+    // Prints to stdout.
     public String toString() {
-        System.out.println(this.packageDesc);
-        System.out.println("    package " + this.packageName + "\r\n");
+        System.out.println("# " + this.className);
+        System.out.println("#### " + this.packageName);
+        System.out.println(this.packageDesc + "\r\n");
+        // System.out.println("## " + this.className);
         System.out.println(this.classDesc);
-        System.out.println("    " + this.className + "\r\n");
         for (DocAttribute i : this.attributes) {
+            System.out.println("## " + i.name);
             System.out.println(i.desc);
-            System.out.println("    " + i.name + "\r\n");
         }
         for (DocMethod i : this.methods) {
+            System.out.println("## " + i.name);
             System.out.println(i.desc);
-            System.out.println("    " + i.name + "\r\n");
         }
         return "";
     }
@@ -75,11 +81,13 @@ public class DocClass {
     protected String parseLine(String line, String comment) {
         if (line.startsWith("//")) {
             // Build up the comment.
-            comment += line.substring(2).trim();
+            comment += line.substring(2).trim() + "\r\n";
+        } else if (line.startsWith("protected")) {
+            comment = "";
         } else if (line.startsWith("public")) {
             comment = this.parseLinePublic(line, comment);
         } else if (line.startsWith("package") && this.packageName == null) {
-            this.packageName = line.substring(7);
+            this.packageName = line.substring(7, line.length() - 1).trim();
             this.packageDesc = comment;
             comment = "";
         }
