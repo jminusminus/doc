@@ -14,7 +14,7 @@ public class DocClass {
     public String file;
 
     // The package name.
-    public String package;
+    public String packageName;
 
     // The description for the package.
     public String packageDesc;
@@ -41,7 +41,6 @@ public class DocClass {
         this.file = file;
         this.reader = reader;
         this.parse();
-        System.out.println(this.file);
     }
 
     // Parse a .java file and return markdown documentation.
@@ -51,28 +50,32 @@ public class DocClass {
         String comment = "";
         while (buf.length > 0) {
             line = new String(buf).trim();
-            if (line.startsWith("//")) {
-                // Build up the comment.
-                comment += line.substring(2).trim();
-            } else if (line.startsWith("public") && line.endsWith(";")) {
-                // Add attribute.
-                DocAttribute a = new DocAttribute();
-                a.attribute = line;
-                a.description = comment;
-                comment = "";
-            } else if (line.startsWith("public") && line.endsWith("{")) {
-                // Add method.
-                DocMethod m = new DocMethod();
-                m.method = line;
-                m.description = comment;
-                comment = "";
-            } else if (line.startsWith("package") && this.package.length() == 0) {
-                this.packageDesc = comment;
-                this.package = line.substring(7);
-                comment = "";
-            }
+            this.parseLine(line, comment);
             // Read the next line into the buffer.
             buf = this.reader.readTo(this.LF);
+        }
+    }
+
+    protected void parseLine(String line, String comment) {
+        if (line.startsWith("//")) {
+            // Build up the comment.
+            comment += line.substring(2).trim();
+        } else if (line.startsWith("public") && line.endsWith(";")) {
+            // Add attribute.
+            DocAttribute a = new DocAttribute();
+            a.attribute = line;
+            a.description = comment;
+            comment = "";
+        } else if (line.startsWith("public") && line.endsWith("{")) {
+            // Add method.
+            DocMethod m = new DocMethod();
+            m.method = line;
+            m.description = comment;
+            comment = "";
+        } else if (line.startsWith("package") && this.packageName == null) {
+            this.packageDesc = comment;
+            this.packageName = line.substring(7);
+            comment = "";
         }
     }
 }
