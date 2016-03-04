@@ -1,0 +1,9 @@
+language: java
+jdk:
+  - oraclejdk8
+script:
+  - git clone https://github.com/jminusminus/jmmtravis.git ~/.jmmtravis
+  - ~/.jmmtravis/stage
+os:
+  - linux
+  - osx
