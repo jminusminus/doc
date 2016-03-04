@@ -9,8 +9,8 @@ package github.com.ricallinson.jmmdoc;
 public class DocAttribute {
 
 	// The attribute.
-    public String attribute;
+    public String name;
 
 	// The description for the attribute.
-    public String description;
+    public String desc;
 }

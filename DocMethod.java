@@ -9,8 +9,8 @@ package github.com.ricallinson.jmmdoc;
 public class DocMethod {
 
 	// The method signature.
-    public String method;
+    public String name;
 
 	// The description for the method.
-    public String description;
+    public String desc;
 }

@@ -22,19 +22,22 @@ public class Doc {
 
     public void parseFiles(String[] files) {
         for (String file : files) {
-            this.parseFile(file);
+            DocClass dc = this.parseFile(file);
+            if (dc != null && dc.className != null) {
+                dc.toString();
+            }
         }
     }
 
-    public void parseFile(String file) {
+    public DocClass parseFile(String file) {
         byte[] data = new byte[0];
         try {
             data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(file));
         } catch (Exception e) {
-            return;
+            return null;
         }
         BufferedInputStreamReader reader = new BufferedInputStreamReader(new InputStreamMock(data));
-        DocClass dc = new DocClass(file, reader);
+        return new DocClass(file, reader);
     }
 
     // Return all .java files in the current workspace.
