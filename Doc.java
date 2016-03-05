@@ -6,9 +6,7 @@
 
 package github.com.ricallinson.jmmdoc;
 
-import github.com.ricallinson.http.util.Map;
-import github.com.ricallinson.http.util.MapItem;
-import github.com.ricallinson.http.util.LinkedListMap;
+import github.com.ricallinson.http.Server;
 
 // Jmm documentation tool.
 public class Doc {
@@ -29,39 +27,52 @@ public class Doc {
             System.out.println(doc.getDoc(args[0]).trim());
             System.out.println("");
         }
-    }
-
-    // Return an instance of Doc.
-    public Doc() {
-        this.parseFiles(this.getJavaFiles());
+        doc.startServer(8080);
     }
 
     // The current JMM working directory.
     protected final String workingDir = System.getenv("JMMPATH");
 
-    // Map of all the classes parsed.
-    protected Map docClasses = new LinkedListMap();
+    // Return an instance of Doc.
+    public Doc() {
+        
+    }
+
+    // Start HTTP server for docs.
+    public void startServer(int port) {
+        Server s = Server.createServer((req, res) -> {
+            String classPath = req.url.substring(1).replace("/", ".");
+            System.out.println(classPath);
+            if (classPath.length() > 0) {
+                res.end(this.getDoc(classPath));
+                return;
+            }
+            res.end(this.toString());
+        });
+        s.listen(port);
+    }
 
     // Returns markdown for the given class path.
     public String getDoc(String classPath) {
-        MapItem dc = this.docClasses.get(classPath);
+        DocClass dc = new DocClass(this.classPathFilePath(classPath));
         if (dc == null) {
             return "";
         }
-        return ((DocClass)dc.value()).toString();
+        return dc.toString();
     }
 
-    // Parse all .java files found and add them to this.docClasses.
-    protected void parseFiles(String[] files) {
-        for (String file : files) {
-            DocClass dc = this.parseFile(file);
-            this.docClasses.put(dc.classPath(), dc);
+    public String classPathFilePath(String classPath) {
+        String path = this.workingDir + "/src/" + classPath.replace(".", "/") + ".java";
+        System.out.println(path);
+        return path;
+    }
+
+    public String toString() {
+        String list = "";
+        for (String file : this.getJavaFiles()) {
+            list += file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".") + "\r\n";
         }
-    }
-
-    // Parse a .java file and return a DocClass instance.
-    protected DocClass parseFile(String file) {
-        return new DocClass(file);
+        return list;
     }
 
     // Return all .java files in the current workspace.
