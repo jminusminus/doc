@@ -35,14 +35,16 @@ public class Doc_test extends Test {
     }
 
     public void test_parse_file() {
-        this.should("parse one file");
+        this.should("parse one file and return markdown");
         Doc doc = new Doc();
-        doc.parseFile("./Doc.java");
+        DocClass dc = doc.parseFile("./Doc.java");
+        this.assertEqual(true, dc.toString().contains("github.com.ricallinson.jmmdoc.Doc"));
     }
 
     public void test_parse_files() {
-        this.should("parse all files");
+        this.should("parse all files and check they are added to the doc instance");
         Doc doc = new Doc();
         doc.parseFiles(doc.getJavaFiles());
+        this.assertEqual(true, doc.getDoc("github.com.ricallinson.jmmdoc.Doc").contains("github.com.ricallinson.jmmdoc.Doc"));
     }
 }

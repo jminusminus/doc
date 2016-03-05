@@ -6,38 +6,40 @@
 
 package github.com.ricallinson.jmmdoc;
 
-import github.com.ricallinson.http.io.BufferedInputStreamReader;
-import github.com.ricallinson.http.io.InputStreamMock;
+import github.com.ricallinson.http.util.Map;
+import github.com.ricallinson.http.util.MapItem;
+import github.com.ricallinson.http.util.LinkedListMap;
 
 public class Doc {
     public static void main(String[] args) {
-        // Get the path from the args.
-        // If the path is a dir;
-        // Walk all files recusively found in the path.
-        // If the path is file;
-        // Parse the file and return Markdown.
+
     }
 
+    // The current JMM working directory.
     public final String workingDir = System.getenv("JMMPATH");
 
+    // Map of all the classes parsed.
+    protected Map docClasses = new LinkedListMap();
+
+    public String getDoc(String classPath) {
+        MapItem dc = this.docClasses.get(classPath);
+        if (dc == null) {
+            return "";
+        }
+        return ((DocClass)dc.value()).toString();
+    }
+
+    // Parse all .java files found and add them to this.docClasses.
     public void parseFiles(String[] files) {
         for (String file : files) {
             DocClass dc = this.parseFile(file);
-            if (dc != null && dc.className != null) {
-                dc.toString();
-            }
+            this.docClasses.put(dc.classPath(), dc);
         }
     }
 
+    // Parse a .java file and return a DocClass instance.
     public DocClass parseFile(String file) {
-        byte[] data = new byte[0];
-        try {
-            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(file));
-        } catch (Exception e) {
-            return null;
-        }
-        BufferedInputStreamReader reader = new BufferedInputStreamReader(new InputStreamMock(data));
-        return new DocClass(file, reader);
+        return new DocClass(file);
     }
 
     // Return all .java files in the current workspace.
@@ -64,7 +66,7 @@ public class Doc {
                 System.out.println(e);
             }
             if (item.isDirectory()) {
-                files += this.walk(file);
+                files += this.walk(file) + " ";
             } else {
                 if (file.endsWith(".java") && !file.endsWith("_test.java")) {
                     files += file + " ";

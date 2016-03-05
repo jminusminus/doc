@@ -7,6 +7,7 @@
 package github.com.ricallinson.jmmdoc;
 
 import github.com.ricallinson.http.io.BufferedInputStreamReader;
+import github.com.ricallinson.http.io.InputStreamMock;
 
 // Container for class documentation.
 // ```
@@ -35,47 +36,57 @@ public class DocClass {
     // The class methods.
     public DocMethod[] methods = new DocMethod[0];
 
-    // The source byte stream.
-    protected BufferedInputStreamReader reader;
-
     // Line Feed.
     protected static final byte LF = (byte)10;
 
-    DocClass(String file, BufferedInputStreamReader reader) {
+    // 
+    protected static final String CRLF = "\r\n";
+
+    DocClass(String file) {
         this.file = file;
-        this.reader = reader;
         this.parse();
+    }
+
+    public String classPath() {
+        return this.packageName + "." + this.className;
     }
 
     // Prints to stdout.
     public String toString() {
-        System.out.println("# " + this.className);
-        System.out.println("#### " + this.packageName);
-        System.out.println(this.packageDesc + "\r\n");
-        // System.out.println("## " + this.className);
-        System.out.println(this.classDesc);
+        String md = "" +
+            "# " + this.className + this.CRLF +
+            "#### " + this.packageName + this.CRLF +
+            this.packageDesc + this.CRLF + this.CRLF +
+            "```" + this.CRLF + "import " + this.classPath() + ";" + this.CRLF + "```" + this.CRLF +
+            this.classDesc + this.CRLF;
         for (DocAttribute i : this.attributes) {
-            System.out.println("## " + i.name);
-            System.out.println(i.desc);
+            md += "## " + i.name + this.CRLF + i.desc + this.CRLF;
         }
         for (DocMethod i : this.methods) {
-            System.out.println("## " + i.name);
-            System.out.println(i.desc);
+            md += "## " + i.name + this.CRLF + i.desc + this.CRLF;
         }
-        return "";
+        return md;
     }
 
     // Parse a .java file and return markdown documentation.
-    protected void parse() {
-        byte[] buf = this.reader.readTo(this.LF);
+    protected boolean parse() {
+        byte[] data = new byte[0];
+        try {
+            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(this.file));
+        } catch (Exception e) {
+            return false;
+        }
+        BufferedInputStreamReader reader = new BufferedInputStreamReader(new InputStreamMock(data));
+        byte[] buf = reader.readTo(this.LF);
         String line;
         String comment = "";
         while (buf.length > 0) {
             line = new String(buf).trim();
             comment = this.parseLine(line, comment);
             // Read the next line into the buffer.
-            buf = this.reader.readTo(this.LF);
+            buf = reader.readTo(this.LF);
         }
+        return true;
     }
 
     protected String parseLine(String line, String comment) {
