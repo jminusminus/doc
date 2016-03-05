@@ -33,11 +33,6 @@ public class Doc {
     // The current JMM working directory.
     protected final String workingDir = System.getenv("JMMPATH");
 
-    // Return an instance of Doc.
-    public Doc() {
-        
-    }
-
     // Start HTTP server for docs.
     public void startServer(int port) {
         Server s = Server.createServer((req, res) -> {
@@ -63,7 +58,6 @@ public class Doc {
 
     public String classPathFilePath(String classPath) {
         String path = this.workingDir + "/src/" + classPath.replace(".", "/") + ".java";
-        System.out.println(path);
         return path;
     }
 
