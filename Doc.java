@@ -10,17 +10,39 @@ import github.com.ricallinson.http.util.Map;
 import github.com.ricallinson.http.util.MapItem;
 import github.com.ricallinson.http.util.LinkedListMap;
 
+// Jmm documentation tool.
 public class Doc {
-    public static void main(String[] args) {
 
+    // Print the documentation for a given class path file.
+    //
+    // ### Usage
+    //
+    // `jmmdoc class_path`
+    //
+    // ```
+    // > jmmdoc github.com.ricallinson.jmmdoc.Doc
+    // ```
+    public static void main(String[] args) {
+        Doc doc = new Doc();
+        if (args.length == 1) {
+            System.out.println("");
+            System.out.println(doc.getDoc(args[0]).trim());
+            System.out.println("");
+        }
+    }
+
+    // Return an instance of Doc.
+    public Doc() {
+        this.parseFiles(this.getJavaFiles());
     }
 
     // The current JMM working directory.
-    public final String workingDir = System.getenv("JMMPATH");
+    protected final String workingDir = System.getenv("JMMPATH");
 
     // Map of all the classes parsed.
     protected Map docClasses = new LinkedListMap();
 
+    // Returns markdown for the given class path.
     public String getDoc(String classPath) {
         MapItem dc = this.docClasses.get(classPath);
         if (dc == null) {
@@ -30,7 +52,7 @@ public class Doc {
     }
 
     // Parse all .java files found and add them to this.docClasses.
-    public void parseFiles(String[] files) {
+    protected void parseFiles(String[] files) {
         for (String file : files) {
             DocClass dc = this.parseFile(file);
             this.docClasses.put(dc.classPath(), dc);
@@ -38,12 +60,12 @@ public class Doc {
     }
 
     // Parse a .java file and return a DocClass instance.
-    public DocClass parseFile(String file) {
+    protected DocClass parseFile(String file) {
         return new DocClass(file);
     }
 
     // Return all .java files in the current workspace.
-    public String[] getJavaFiles() {
+    protected String[] getJavaFiles() {
         if (this.workingDir.length() == 0) {
             return new String[0];
         }

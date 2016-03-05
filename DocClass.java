@@ -24,6 +24,9 @@ public class DocClass {
     // The description for the package.
     public String packageDesc;
 
+    // The description for main.
+    public String mainDesc; 
+
     // The class name.
     public String className;
 
@@ -55,10 +58,11 @@ public class DocClass {
     public String toString() {
         String md = "" +
             "# " + this.className + this.CRLF +
+            this.mainDesc + this.CRLF +
             "#### " + this.packageName + this.CRLF +
-            this.packageDesc + this.CRLF + this.CRLF +
-            "```" + this.CRLF + "import " + this.classPath() + ";" + this.CRLF + "```" + this.CRLF +
-            this.classDesc + this.CRLF;
+            this.packageDesc + this.CRLF +
+            this.classDesc + this.CRLF +
+            "```" + this.CRLF + "import " + this.classPath() + ";" + this.CRLF + "```" + this.CRLF;
         for (DocAttribute i : this.attributes) {
             md += "## " + i.name + this.CRLF + i.desc + this.CRLF;
         }
@@ -117,6 +121,10 @@ public class DocClass {
             // Add class.
             this.classDesc = comment;
             this.className = line.substring(12, line.length() - 1).trim();
+            comment = "";
+        } else if (line.startsWith("public static void main(")) {
+            // Add main method description.
+            this.mainDesc = comment;
             comment = "";
         } else if (line.startsWith("public") && line.endsWith("{")) {
             // Add method.

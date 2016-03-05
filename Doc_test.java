@@ -23,28 +23,10 @@ public class Doc_test extends Test {
         this.assertEqual("github.com.ricallinson.jmmdoc.Doc", doc.getClass().getName());
     }
 
-    public void test_getJavaFiles() {
-        this.should("return a list of all .java files in the given directory");
-        Doc doc = new Doc();
-        String[] files = doc.getJavaFiles();
-        for (String file : files) {
-            if (file.contains("/jmmdoc/Doc.java")) {
-                this.assertEqual(true, true);
-            }
-        }
-    }
-
-    public void test_parse_file() {
+    public void test_getDoc() {
         this.should("parse one file and return markdown");
         Doc doc = new Doc();
         DocClass dc = doc.parseFile("./Doc.java");
         this.assertEqual(true, dc.toString().contains("github.com.ricallinson.jmmdoc.Doc"));
-    }
-
-    public void test_parse_files() {
-        this.should("parse all files and check they are added to the doc instance");
-        Doc doc = new Doc();
-        doc.parseFiles(doc.getJavaFiles());
-        this.assertEqual(true, doc.getDoc("github.com.ricallinson.jmmdoc.Doc").contains("github.com.ricallinson.jmmdoc.Doc"));
     }
 }
