@@ -11,6 +11,12 @@ import github.com.ricallinson.http.Server;
 // Jmm documentation tool.
 public class Doc {
 
+    // Line Feed.
+    protected static final byte LF = (byte)10;
+
+    // 
+    protected static final String CRLF = "\r\n";
+
     // Print the documentation for a given class path file.
     //
     // ### Usage
@@ -24,8 +30,9 @@ public class Doc {
         Doc doc = new Doc();
         if (args.length == 1) {
             System.out.println("");
-            System.out.println(doc.getDoc(args[0]).trim());
+            System.out.println(doc.getDoc(args[0], false).trim());
             System.out.println("");
+            return;
         }
         doc.startServer(8080);
     }
@@ -37,36 +44,55 @@ public class Doc {
     public void startServer(int port) {
         Server s = Server.createServer((req, res) -> {
             String classPath = req.url.substring(1).replace("/", ".");
-            System.out.println(classPath);
+            String html;
             if (classPath.length() > 0) {
-                res.end(this.getDoc(classPath));
-                return;
+                html = this.getDoc(classPath, true);
+            } else {
+                html = this.toHtml();
             }
-            res.end(this.toString());
+            res.setHeader("Content", "text/html");
+            res.end("<html><body>" + html + "</body></html>");
         });
         s.listen(port);
+        System.out.println("Document server started on port 8080");
     }
 
-    // Returns markdown for the given class path.
-    public String getDoc(String classPath) {
+    // Returns the documentation for the given class path.
+    public String getDoc(String classPath, boolean asHtml) {
         DocClass dc = new DocClass(this.classPathFilePath(classPath));
         if (dc == null) {
             return "";
         }
+        if (asHtml) {
+            return dc.toHtml();
+        }
         return dc.toString();
     }
 
+    // Returns a JMM class path for the given Java class path.
     public String classPathFilePath(String classPath) {
         String path = this.workingDir + "/src/" + classPath.replace(".", "/") + ".java";
         return path;
     }
 
+    // Returns markdown.
     public String toString() {
         String list = "";
         for (String file : this.getJavaFiles()) {
-            list += file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".") + "\r\n";
+            list += file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".") + this.CRLF;
         }
         return list;
+    }
+
+    // Returns HTML.
+    public String toHtml() {
+        String list = "<ul>";
+        String link;
+        for (String file : this.getJavaFiles()) {
+            link = file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".");
+            list += "<li><a href=\"" + link + "\">" + link + "</a></li>";
+        }
+        return list + "</ul>";
     }
 
     // Return all .java files in the current workspace.

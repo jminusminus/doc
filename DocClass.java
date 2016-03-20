@@ -39,12 +39,6 @@ public class DocClass {
     // The class methods.
     public DocMethod[] methods = new DocMethod[0];
 
-    // Line Feed.
-    protected static final byte LF = (byte)10;
-
-    // 
-    protected static final String CRLF = "\r\n";
-
     DocClass(String file) {
         this.file = file;
         this.parse();
@@ -54,20 +48,38 @@ public class DocClass {
         return this.packageName + "." + this.className;
     }
 
-    // Prints to stdout.
+    // Returns Markdown.
     public String toString() {
         String md = "" +
-            "# " + this.className + this.CRLF +
-            this.mainDesc + this.CRLF +
-            "#### " + this.packageName + this.CRLF +
-            this.packageDesc + this.CRLF +
-            this.classDesc + this.CRLF +
-            "```" + this.CRLF + "import " + this.classPath() + ";" + this.CRLF + "```" + this.CRLF;
+            "# " + this.className + Doc.CRLF +
+            this.mainDesc + Doc.CRLF +
+            "#### " + this.packageName + Doc.CRLF +
+            this.packageDesc + Doc.CRLF +
+            this.classDesc + Doc.CRLF +
+            "```" + Doc.CRLF + "import " + this.classPath() + ";" + Doc.CRLF + "```" + Doc.CRLF;
         for (DocAttribute i : this.attributes) {
-            md += "## " + i.name + this.CRLF + i.desc + this.CRLF;
+            md += i.toString();
         }
         for (DocMethod i : this.methods) {
-            md += "## " + i.name + this.CRLF + i.desc + this.CRLF;
+            md += i.toString();
+        }
+        return md;
+    }
+
+    // Returns HTML.
+    public String toHtml() {
+        String md = "" +
+            "<h2>" + this.className + "</h2>" +
+            "<p>" + this.mainDesc + "</p>" +
+            "<h4>" + this.packageName + "<h4>" +
+            "<p>" + this.packageDesc + "</p>" +
+            "<p>" + this.classDesc + "</p>" +
+            "<pre>" + "import " + this.classPath() + ";</pre>";
+        for (DocAttribute i : this.attributes) {
+            md += i.toHtml();
+        }
+        for (DocMethod i : this.methods) {
+            md += i.toHtml();
         }
         return md;
     }
@@ -81,14 +93,14 @@ public class DocClass {
             return false;
         }
         BufferedInputStreamReader reader = new BufferedInputStreamReader(new InputStreamMock(data));
-        byte[] buf = reader.readTo(this.LF);
+        byte[] buf = reader.readTo(Doc.LF);
         String line;
         String comment = "";
         while (buf.length > 0) {
             line = new String(buf).trim();
             comment = this.parseLine(line, comment);
             // Read the next line into the buffer.
-            buf = reader.readTo(this.LF);
+            buf = reader.readTo(Doc.LF);
         }
         return true;
     }
@@ -96,7 +108,7 @@ public class DocClass {
     protected String parseLine(String line, String comment) {
         if (line.startsWith("//")) {
             // Build up the comment.
-            comment += line.substring(2).trim() + "\r\n";
+            comment += line.substring(2).trim() + Doc.CRLF;
         } else if (line.startsWith("protected")) {
             comment = "";
         } else if (line.startsWith("public")) {
