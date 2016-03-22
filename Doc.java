@@ -6,6 +6,7 @@
 
 package github.com.ricallinson.jmmdoc;
 
+import github.com.ricallinson.jmmmarkdown.Markdown;
 import github.com.ricallinson.http.Server;
 
 // Jmm documentation tool.
@@ -30,7 +31,7 @@ public class Doc {
         Doc doc = new Doc();
         if (args.length == 1) {
             System.out.println("");
-            System.out.println(doc.getDoc(args[0], false).trim());
+            System.out.println(doc.getDoc(args[0]).trim());
             System.out.println("");
             return;
         }
@@ -44,27 +45,25 @@ public class Doc {
     public void startServer(int port) {
         Server s = Server.createServer((req, res) -> {
             String classPath = req.url.substring(1).replace("/", ".");
-            String html;
+            String md;
             if (classPath.length() > 0) {
-                html = this.getDoc(classPath, true);
+                md = this.getDoc(classPath);
             } else {
-                html = this.toHtml();
+                md = this.toString();
             }
             res.setHeader("Content", "text/html");
-            res.end("<html><body>" + html + "</body></html>");
+            res.end("<html><body>" + Markdown.parse(md).toString() + "</body></html>");
         });
         s.listen(port);
         System.out.println("Document server started on port 8080");
+        System.out.println("Serving documentation from " + this.workingDir);
     }
 
     // Returns the documentation for the given class path.
-    public String getDoc(String classPath, boolean asHtml) {
+    public String getDoc(String classPath) {
         DocClass dc = new DocClass(this.classPathFilePath(classPath));
         if (dc == null) {
             return "";
-        }
-        if (asHtml) {
-            return dc.toHtml();
         }
         return dc.toString();
     }
@@ -79,20 +78,12 @@ public class Doc {
     public String toString() {
         String list = "";
         for (String file : this.getJavaFiles()) {
-            list += file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".") + this.CRLF;
+            if (file.length() > this.workingDir.length() + 10) {
+                String classPath = file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".");
+                list += "* [/" + classPath + "](" + classPath + ")" + this.CRLF;
+            }
         }
         return list;
-    }
-
-    // Returns HTML.
-    public String toHtml() {
-        String list = "<ul>";
-        String link;
-        for (String file : this.getJavaFiles()) {
-            link = file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".");
-            list += "<li><a href=\"" + link + "\">" + link + "</a></li>";
-        }
-        return list + "</ul>";
     }
 
     // Return all .java files in the current workspace.
