@@ -17,9 +17,4 @@ public class DocMethod {
     public String toString() {
     	return "## " + this.name + Doc.CRLF + this.desc + Doc.CRLF;
     }
-
-    // Returns HTML.
-    public String toHtml() {
-    	return "<h2>" + this.name + "</h2><p>" + this.desc + "</p>";
-    }
 }

@@ -4,28 +4,25 @@
 // See the accompanying LICENSE file for terms.
 //
 
+// Package description.
 package github.com.ricallinson.jmmdoc;
 
 import github.com.ricallinson.jmmmarkdown.Markdown;
 import github.com.ricallinson.http.Server;
 
-// Jmm documentation tool.
+// Class description.
 public class Doc {
 
-    // Line Feed.
-    protected static final byte LF = (byte)10;
-
+    // Public method description with inline markdown.
     // 
-    protected static final String CRLF = "\r\n";
-
     // Print the documentation for a given class path file.
     //
     // ### Usage
     //
-    // `jmmdoc class_path`
+    // `jmmdoc [class_path]`
     //
     // ```
-    // > jmmdoc github.com.ricallinson.jmmdoc.Doc
+    // $ jmmdoc github.com.ricallinson.jmmdoc.Doc
     // ```
     public static void main(String[] args) {
         Doc doc = new Doc();
@@ -40,7 +37,14 @@ public class Doc {
 
     // The current JMM working directory.
     protected final String workingDir = System.getenv("JMMPATH");
+    
+    // Line Feed.
+    protected static final byte LF = (byte)10;
 
+    // Carrage return, line feed.
+    protected static final String CRLF = "\r\n";
+
+    // Public method description.
     // Start HTTP server for docs.
     public void startServer(int port) {
         Server s = Server.createServer((req, res) -> {
@@ -52,13 +56,14 @@ public class Doc {
                 md = this.toString();
             }
             res.setHeader("Content", "text/html");
-            res.end("<html><body>" + Markdown.parse(md).toString() + "</body></html>");
+            res.end("<html><head>" + this.getCss() + "</head><body>" + Markdown.parse(md).toString() + "</body></html>");
         });
         s.listen(port);
         System.out.println("Document server started on port 8080");
         System.out.println("Serving documentation from " + this.workingDir);
     }
 
+    // Public method description.
     // Returns the documentation for the given class path.
     public String getDoc(String classPath) {
         DocClass dc = new DocClass(this.classPathFilePath(classPath));
@@ -68,12 +73,14 @@ public class Doc {
         return dc.toString();
     }
 
+    // Public method description.
     // Returns a JMM class path for the given Java class path.
     public String classPathFilePath(String classPath) {
         String path = this.workingDir + "/src/" + classPath.replace(".", "/") + ".java";
         return path;
     }
 
+    // Public method description.
     // Returns markdown.
     public String toString() {
         String list = "";
@@ -118,5 +125,15 @@ public class Doc {
             }
         }
         return files.trim();
+    }
+
+    protected String getCss() {
+        byte[] data = new byte[0];
+        try {
+            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("./resources/main.css"));
+        } catch (Exception e) {
+            return "";
+        }
+        return "<style>" + new String(data) + "</style>";
     }
 }

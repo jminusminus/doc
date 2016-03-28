@@ -66,24 +66,6 @@ public class DocClass {
         return md;
     }
 
-    // Returns HTML.
-    public String toHtml() {
-        String md = "" +
-            "<h2>" + this.className + "</h2>" +
-            "<p>" + this.mainDesc + "</p>" +
-            "<h4>" + this.packageName + "<h4>" +
-            "<p>" + this.packageDesc + "</p>" +
-            "<p>" + this.classDesc + "</p>" +
-            "<pre>" + "import " + this.classPath() + ";</pre>";
-        for (DocAttribute i : this.attributes) {
-            md += i.toHtml();
-        }
-        for (DocMethod i : this.methods) {
-            md += i.toHtml();
-        }
-        return md;
-    }
-
     // Parse a .java file and return markdown documentation.
     protected boolean parse() {
         byte[] data = new byte[0];
@@ -98,7 +80,11 @@ public class DocClass {
         String comment = "";
         while (buf.length > 0) {
             line = new String(buf).trim();
-            comment = this.parseLine(line, comment);
+            if (line.isEmpty() == false) {
+                comment = this.parseLine(line, comment);
+            } else {
+                comment = "";
+            }
             // Read the next line into the buffer.
             buf = reader.readTo(Doc.LF);
         }
