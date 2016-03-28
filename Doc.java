@@ -56,7 +56,7 @@ public class Doc {
                 md = this.toString();
             }
             res.setHeader("Content", "text/html");
-            res.end("<html><head>" + this.getCss() + "</head><body>" + Markdown.parse(md).toString() + "</body></html>");
+            res.end("<html><head>" + this.getCss() + "</head><body>" + this.getMenu() + "<div class=\"content\">" + Markdown.parse(md).toString() + "</div></body></html>");
         });
         s.listen(port);
         System.out.println("Document server started on port 8080");
@@ -90,7 +90,7 @@ public class Doc {
                 list += "* [/" + classPath + "](" + classPath + ")" + this.CRLF;
             }
         }
-        return list;
+        return "## Package List\n" + list;
     }
 
     // Return all .java files in the current workspace.
@@ -127,6 +127,18 @@ public class Doc {
         return files.trim();
     }
 
+    // TODO: don't use a file.
+    protected String getMenu() {
+        byte[] data = new byte[0];
+        try {
+            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("./resources/menu.html"));
+        } catch (Exception e) {
+            return "";
+        }
+        return new String(data);
+    }
+
+    // TODO: don't use a file.
     protected String getCss() {
         byte[] data = new byte[0];
         try {
