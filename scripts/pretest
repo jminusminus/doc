@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#
+# Copyright 2016, Yahoo Inc.
+# Copyrights licensed under the New BSD License.
+# See the accompanying LICENSE file for terms.
+#
+
+. $JMMHOME/jmm.sh
+jmm get github.com/ricallinson/http
+jmm get github.com/ricallinson/jmmmarkdown
