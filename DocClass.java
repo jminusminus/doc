@@ -16,22 +16,22 @@ import github.com.ricallinson.http.io.InputStreamMock;
 public class DocClass {
 
     // The source file.
-    public String file;
+    public String file = "";
 
     // The package name.
-    public String packageName;
+    public String packageName = "";
 
     // The description for the package.
-    public String packageDesc;
+    public String packageDesc = "";
 
     // The description for main.
-    public String mainDesc; 
+    public String mainDesc = ""; 
 
     // The class name.
-    public String className;
+    public String className = "";
 
     // The description for the class.
-    public String classDesc;
+    public String classDesc = "";
 
     // The class attributes.
     public DocAttribute[] attributes = new DocAttribute[0];
@@ -50,13 +50,18 @@ public class DocClass {
 
     // Returns Markdown.
     public String toString() {
-        String md = "" +
-            "# " + this.className + Doc.CRLF +
-            this.mainDesc + Doc.CRLF +
-            "#### " + this.packageName + Doc.CRLF +
-            this.packageDesc + Doc.CRLF +
-            this.classDesc + Doc.CRLF +
-            "```" + Doc.CRLF + "import " + this.classPath() + ";" + Doc.CRLF + "```" + Doc.CRLF;
+        String md = "# " + this.className + Doc.CRLF;
+        if (this.mainDesc.length() > 0) {
+            md += this.mainDesc + Doc.CRLF;
+        }
+        md += "#### " + this.packageName + Doc.CRLF;
+        if (this.packageDesc.length() > 0) {
+            md += this.packageDesc + Doc.CRLF;
+        }
+        if (this.classDesc.length() > 0) {
+            md += this.classDesc + Doc.CRLF;
+        }
+        md += "```" + Doc.CRLF + "import " + this.classPath() + ";" + Doc.CRLF + "```" + Doc.CRLF;
         for (DocAttribute i : this.attributes) {
             md += i.toString();
         }
@@ -99,7 +104,7 @@ public class DocClass {
             comment = "";
         } else if (line.startsWith("public")) {
             comment = this.parseLinePublic(line, comment);
-        } else if (line.startsWith("package") && this.packageName == null) {
+        } else if (line.startsWith("package") && this.packageName.length() == 0) {
             this.packageName = line.substring(7, line.length() - 1).trim();
             this.packageDesc = comment;
             comment = "";
