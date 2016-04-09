@@ -60,7 +60,7 @@ public class Doc {
             res.end("<html><head>" + this.getCss() + "</head><body>" + this.getMenu() + "<div class=\"content\">" + Markdown.parse(md).toString() + "</div></body></html>");
         });
         s.listen(port);
-        System.out.println("Document server started on port 8080");
+        System.out.println("Document server started at http://localhost:8080/");
         System.out.println("Serving documentation from " + this.workingDir);
     }
 
