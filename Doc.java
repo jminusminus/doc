@@ -56,6 +56,7 @@ public class Doc {
                 md = this.toString();
             }
             res.setHeader("Content", "text/html");
+            // Replace this with handlebars.
             res.end("<html><head>" + this.getCss() + "</head><body>" + this.getMenu() + "<div class=\"content\">" + Markdown.parse(md).toString() + "</div></body></html>");
         });
         s.listen(port);
