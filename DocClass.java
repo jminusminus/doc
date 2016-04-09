@@ -94,7 +94,7 @@ public class DocClass {
     protected String parseLine(String line, String comment) {
         if (line.startsWith("//")) {
             // Build up the comment.
-            comment += line.substring(2).trim() + Doc.CRLF;
+            comment += this.removeCommentSpace(line.substring(2)) + Doc.CRLF;
         } else if (line.startsWith("protected")) {
             comment = "";
         } else if (line.startsWith("public")) {
@@ -131,6 +131,25 @@ public class DocClass {
             m.desc = comment;
             this.addMethod(m);
             comment = "";
+        }
+        return comment;
+    }
+
+    // Is there is a space before the coment text starts [// abc]?
+    // Or, are there spaces in comment code [//     some code]?
+    protected String removeCommentSpace(String comment) {
+        if (comment.length() == 0) {
+            return "";
+        }
+        int index = 0;
+        // Count the numer of spaces before a comment starts.
+        char token = comment.charAt(index);
+        while (token == ' ') {
+            index++;
+            token = comment.charAt(index);
+        }
+        if (index == 1 || index == 5) {
+            return comment.substring(1);
         }
         return comment;
     }
