@@ -4,7 +4,7 @@
 // See the accompanying LICENSE file for terms.
 //
 
-package github.com.ricallinson.jmmdoc;
+package github.com.jminusminus.doc;
 
 import github.com.jminusminus.simplebdd.Test;
 
@@ -20,13 +20,13 @@ public class Doc_test extends Test {
     public void test_new_Doc() {
         this.should("return an instance of Doc");
         Doc doc = new Doc();
-        this.assertEqual("github.com.ricallinson.jmmdoc.Doc", doc.getClass().getName());
+        this.assertEqual("github.com.jminusminus.doc.Doc", doc.getClass().getName());
     }
 
     // public void test_getDoc() {
     //     this.should("parse one file and return markdown");
     //     Doc doc = new Doc();
     //     DocClass dc = doc.parseFile("./Doc.java");
-    //     this.assertEqual(true, dc.toString().contains("github.com.ricallinson.jmmdoc.Doc"));
+    //     this.assertEqual(true, dc.toString().contains("github.com.jminusminus.doc.Doc"));
     // }
 }

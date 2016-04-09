@@ -4,7 +4,7 @@
 // See the accompanying LICENSE file for terms.
 //
 
-package github.com.ricallinson.jmmdoc;
+package github.com.jminusminus.doc;
 
 public class DocAttribute {
 

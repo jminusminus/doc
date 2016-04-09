@@ -4,8 +4,10 @@
 // See the accompanying LICENSE file for terms.
 //
 
-// Package description.
-package github.com.ricallinson.jmmdoc;
+// [![Build Status](https://travis-ci.org/jminusminus/doc.svg?branch=master)](https://travis-ci.org/jminusminus/doc)
+// ## Stability: 0 - Unstable
+// This package contains utilities for generating Jmm documentation and serving it via HTTP.
+package github.com.jminusminus.doc;
 
 import github.com.ricallinson.jmmmarkdown.Markdown;
 import github.com.ricallinson.http.Server;
@@ -13,7 +15,7 @@ import github.com.ricallinson.http.Server;
 // Class description.
 public class Doc {
 
-    // Public method description with inline markdown.
+    // Jmm main() method description with inline markdown.
     // 
     // Print the documentation for a given class path file.
     //
@@ -22,7 +24,7 @@ public class Doc {
     // `jmmdoc [class_path]`
     //
     // ```
-    // $ jmmdoc github.com.ricallinson.jmmdoc.Doc
+    // $ jmmdoc github.com.jminusminus.doc.Doc
     // ```
     public static void main(String[] args) {
         Doc doc = new Doc();
