@@ -15,16 +15,24 @@ import github.com.ricallinson.http.Server;
 // Class description.
 public class Doc {
 
-    // Jmm main() method description with inline markdown.
-    // 
-    // Print the documentation for a given class path file.
+    // ## Command Line Usage
     //
-    // ### Usage
-    //
-    // `jmmdoc [class_path]`
+    // Prints the Markdown for a given Jmm class.
+    // `doc [jmm_classpath]`
     //
     // ```
-    // $ jmmdoc github.com.jminusminus.doc.Doc
+    // $ doc github.com.jminusminus.doc.Doc
+    // // Prints the Markdown for class "github.com.jminusminus.doc.Doc" to stdout.
+    // ```
+    // 
+    // Starts a web server with all documentation for the current Jmm workspace.
+    // `doc`
+    //
+    // ```java
+    // $ doc
+    // Server started on port 8080, using 4 cores and 8 threads...
+    // Document server started at http://localhost:8080/
+    // Serving documentation from /Users/allinson/Java/jmmworkspace 
     // ```
     public static void main(String[] args) {
         Doc doc = new Doc();
