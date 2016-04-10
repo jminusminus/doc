@@ -35,18 +35,11 @@ Class description.
 import github.com.jminusminus.doc.Doc;
 ```
 ## void startServer(int port)
-Public method description.
-Start HTTP server for docs.
+Start a HTTP server on the given port to serve the documentation for the current Jmm workspace.
 
 ## String getDoc(String classPath)
-Public method description.
-Returns the documentation for the given class path.
-
-## String classPathFilePath(String classPath)
-Public method description.
-Returns a JMM class path for the given Java class path.
+Returns Markdown documentation for the given class path.
 
 ## String toString()
-Public method description.
-Returns markdown.
+Returns Markdown with links to all the classes found in the current Jmm workspace.
 

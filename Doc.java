@@ -54,8 +54,7 @@ public class Doc {
     // Carrage return, line feed.
     protected static final String CRLF = "\r\n";
 
-    // Public method description.
-    // Start HTTP server for docs.
+    // Start a HTTP server on the given port to serve the documentation for the current Jmm workspace.
     public void startServer(int port) {
         Server s = Server.createServer((req, res) -> {
             String classPath = req.url.substring(1).replace("/", ".");
@@ -74,8 +73,7 @@ public class Doc {
         System.out.println("Serving documentation from " + this.workingDir);
     }
 
-    // Public method description.
-    // Returns the documentation for the given class path.
+    // Returns Markdown documentation for the given class path.
     public String getDoc(String classPath) {
         DocClass dc = new DocClass(this.classPathFilePath(classPath));
         if (dc == null) {
@@ -84,15 +82,7 @@ public class Doc {
         return dc.toString();
     }
 
-    // Public method description.
-    // Returns a JMM class path for the given Java class path.
-    public String classPathFilePath(String classPath) {
-        String path = this.workingDir + "/src/" + classPath.replace(".", "/") + ".java";
-        return path;
-    }
-
-    // Public method description.
-    // Returns markdown.
+    // Returns Markdown with links to all the classes found in the current Jmm workspace.
     public String toString() {
         String list = "";
         for (String file : this.getJavaFiles()) {
@@ -102,6 +92,12 @@ public class Doc {
             }
         }
         return "## Package List\n" + list;
+    }
+
+    // Returns a Jmm class path for the given Java package name.
+    protected String classPathFilePath(String classPath) {
+        String path = this.workingDir + "/src/" + classPath.replace(".", "/") + ".java";
+        return path;
     }
 
     // Return all .java files in the current workspace.
