@@ -51,6 +51,7 @@ public class DocClass {
     // Returns Markdown.
     public String toString() {
         String md = "# " + this.className + Doc.CRLF;
+        md += "## Install" + Doc.CRLF + "```" + Doc.CRLF + "jmm get " + this.getInstallPath() + Doc.CRLF + "```" + Doc.CRLF;
         if (this.mainDesc.length() > 0) {
             md += this.mainDesc + Doc.CRLF;
         }
@@ -171,5 +172,9 @@ public class DocClass {
         System.arraycopy(this.methods, 0, n, 0, this.methods.length);
         n[this.methods.length] = m;
         this.methods = n;
+    }
+
+    protected String getInstallPath() {
+        return this.packageName.replace('.', '/').replaceFirst("/", ".");
     }
 }

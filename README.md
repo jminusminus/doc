@@ -1,5 +1,9 @@
 
 # Doc
+## Install
+```
+jmm get github.com/jminusminus/doc
+```
 ## Command Line Usage
 
 Prints the Markdown for a given Jmm class.
