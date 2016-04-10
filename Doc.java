@@ -12,7 +12,7 @@ package github.com.jminusminus.doc;
 import github.com.ricallinson.jmmmarkdown.Markdown;
 import github.com.ricallinson.http.Server;
 
-// Class description.
+// This class can be programmatically used to generate Jmm documentation from a Jmm packages source code.
 public class Doc {
 
     // ## Command Line Usage

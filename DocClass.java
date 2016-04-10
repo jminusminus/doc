@@ -51,14 +51,15 @@ public class DocClass {
     // Returns Markdown.
     public String toString() {
         String md = "# " + this.className + Doc.CRLF;
+        md += "#### Package: " + this.packageName + Doc.CRLF;
+        if (this.packageDesc.length() > 0) {
+            md += this.packageDesc + Doc.CRLF;
+        }
         md += "## Install" + Doc.CRLF + "```" + Doc.CRLF + "jmm get " + this.getInstallPath() + Doc.CRLF + "```" + Doc.CRLF;
         if (this.mainDesc.length() > 0) {
             md += this.mainDesc + Doc.CRLF;
         }
-        md += "#### " + this.packageName + Doc.CRLF;
-        if (this.packageDesc.length() > 0) {
-            md += this.packageDesc + Doc.CRLF;
-        }
+        md += "## " + this.classPath() + Doc.CRLF;
         if (this.classDesc.length() > 0) {
             md += this.classDesc + Doc.CRLF;
         }

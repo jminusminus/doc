@@ -1,5 +1,10 @@
 
 # Doc
+#### Package: github.com.jminusminus.doc
+[![Build Status](https://travis-ci.org/jminusminus/doc.svg?branch=master)](https://travis-ci.org/jminusminus/doc)
+## Stability: 0 - Unstable
+This package contains utilities for generating Jmm documentation and serving it via HTTP.
+
 ## Install
 ```
 jmm get github.com/jminusminus/doc
@@ -24,12 +29,8 @@ Document server started at http://localhost:8080/
 Serving documentation from /Users/allinson/Java/jmmworkspace
 ```
 
-#### github.com.jminusminus.doc
-[![Build Status](https://travis-ci.org/jminusminus/doc.svg?branch=master)](https://travis-ci.org/jminusminus/doc)
-## Stability: 0 - Unstable
-This package contains utilities for generating Jmm documentation and serving it via HTTP.
-
-Class description.
+## github.com.jminusminus.doc.Doc
+This class can be programmatically used to generate Jmm documentation from a Jmm packages source code.
 
 ```
 import github.com.jminusminus.doc.Doc;
