@@ -39,7 +39,7 @@ import github.com.jminusminus.doc.Doc;
 Start a HTTP server on the given port to serve the documentation for the current Jmm workspace.
 
 ## String getDoc(String classPath)
-Returns Markdown documentation for the given class path.
+Returns Markdown documentation for the given Jmm class path in the current Jmm workspace.
 
 ## String toString()
 Returns Markdown with links to all the classes found in the current Jmm workspace.

@@ -73,7 +73,7 @@ public class Doc {
         System.out.println("Serving documentation from " + this.workingDir);
     }
 
-    // Returns Markdown documentation for the given class path.
+    // Returns Markdown documentation for the given Jmm class path in the current Jmm workspace.
     public String getDoc(String classPath) {
         DocClass dc = new DocClass(this.classPathFilePath(classPath));
         if (dc == null) {
