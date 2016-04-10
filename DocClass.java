@@ -174,6 +174,7 @@ public class DocClass {
         this.methods = n;
     }
 
+    // This needs updating when more than github.com is supported.
     protected String getInstallPath() {
         return this.packageName.replace('.', '/').replaceFirst("/", ".");
     }
