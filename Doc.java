@@ -88,7 +88,7 @@ public class Doc {
         for (String file : this.getJavaFiles()) {
             if (file.length() > this.workingDir.length() + 10) {
                 String classPath = file.substring(this.workingDir.length() + 5, file.length() - 5).replace("/", ".");
-                list += "* [/" + classPath + "](" + classPath + ")" + this.CRLF;
+                list += "* [" + classPath + "](/" + classPath + ")" + this.CRLF;
             }
         }
         return "## Package List\n" + list;
