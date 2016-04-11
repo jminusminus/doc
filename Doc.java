@@ -134,22 +134,20 @@ public class Doc {
         return files.trim();
     }
 
-    // TODO: don't use a file.
     protected String getMenu() {
         byte[] data = new byte[0];
         try {
-            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("./resources/menu.html"));
+            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(this.workingDir + "/src/github/com/jminusminus/doc/resources/menu.html"));
         } catch (Exception e) {
             return "";
         }
         return new String(data);
     }
 
-    // TODO: don't use a file.
     protected String getCss() {
         byte[] data = new byte[0];
         try {
-            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("./resources/main.css"));
+            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(this.workingDir + "/src/github/com/jminusminus/doc/resources/main.css"));
         } catch (Exception e) {
             return "";
         }
