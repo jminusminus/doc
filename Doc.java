@@ -66,7 +66,8 @@ public class Doc {
             }
             res.setHeader("Content", "text/html");
             // Replace this with handlebars.
-            res.end("<html><head>" + this.getCss() + "</head><body>" + this.getMenu() + "<div class=\"content\">" + Markdown.parse(md).toString() + "</div></body></html>");
+            res.end(this.renderHtml(classPath, Markdown.parse(md).toString()));
+            // res.end("<html><head>" + this.getCss() + "</head><body>" + this.getMenu() + "<div class=\"content\">" + Markdown.parse(md).toString() + "</div></body></html>");
         });
         s.listen(port);
         System.out.println("Document server started at http://localhost:8080/");
@@ -134,14 +135,18 @@ public class Doc {
         return files.trim();
     }
 
-    protected String getMenu() {
+    protected String renderHtml(String title, String content) {
         byte[] data = new byte[0];
         try {
-            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(this.workingDir + "/src/github/com/jminusminus/doc/resources/menu.html"));
+            data = java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(this.workingDir + "/src/github/com/jminusminus/doc/resources/main.html"));
         } catch (Exception e) {
             return "";
         }
-        return new String(data);
+        String html = new String(data);
+        html = html.replace("{{title}}", title);
+        html = html.replace("{{css}}", this.getCss());
+        html = html.replace("{{content}}", content);
+        return html;
     }
 
     protected String getCss() {
@@ -151,6 +156,6 @@ public class Doc {
         } catch (Exception e) {
             return "";
         }
-        return "<style>" + new String(data) + "</style>";
+        return new String(data);
     }
 }
