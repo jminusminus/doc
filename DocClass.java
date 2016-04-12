@@ -59,14 +59,16 @@ public class DocClass {
         if (this.mainDesc.length() > 0) {
             md += this.mainDesc + Doc.CRLF;
         }
-        md += "## " + this.classPath() + Doc.CRLF;
+        md += "## Class: " + this.classPath() + Doc.CRLF;
+        md += "```" + Doc.CRLF + "import " + this.classPath() + ";" + Doc.CRLF + "```" + Doc.CRLF;
         if (this.classDesc.length() > 0) {
             md += this.classDesc + Doc.CRLF;
         }
-        md += "```" + Doc.CRLF + "import " + this.classPath() + ";" + Doc.CRLF + "```" + Doc.CRLF;
+        md += "## Attributes" + Doc.CRLF;
         for (DocAttribute i : this.attributes) {
             md += i.toString();
         }
+        md += "## Methods" + Doc.CRLF;
         for (DocMethod i : this.methods) {
             md += i.toString();
         }
