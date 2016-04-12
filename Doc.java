@@ -9,8 +9,8 @@
 // This package contains utilities for generating Jmm documentation and serving it via HTTP.
 package github.com.jminusminus.doc;
 
-import github.com.ricallinson.jmmmarkdown.Markdown;
-import github.com.ricallinson.http.Server;
+import github.com.jminusminus.markdown.Markdown;
+import github.com.jminusminus.http.Server;
 
 // This class can be programmatically used to generate Jmm documentation from a Jmm packages source code.
 public class Doc {
