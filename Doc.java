@@ -10,7 +10,7 @@
 package github.com.jminusminus.doc;
 
 import github.com.jminusminus.markdown.Markdown;
-import github.com.jminusminus.http.Server;
+import github.com.jminusminus.core.http.Server;
 
 // This class can be programmatically used to generate Jmm documentation from a Jmm packages source code.
 public class Doc {

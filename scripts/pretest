@@ -8,5 +8,5 @@
 
 echo "Pretest Script Running"
 . $JMMHOME/jmm.sh
-jmm get github.com/jminusminus/http
+jmm get github.com/jminusminus/core
 jmm get github.com/jminusminus/markdown

@@ -6,8 +6,8 @@
 
 package github.com.jminusminus.doc;
 
-import github.com.jminusminus.http.io.BufferedInputStreamReader;
-import github.com.jminusminus.http.io.InputStreamMock;
+import github.com.jminusminus.core.io.BufferedInputStreamReader;
+import github.com.jminusminus.core.io.InputStreamMock;
 
 // Container for class documentation.
 // ```
