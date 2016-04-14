@@ -1,3 +1,5 @@
+/*http://paletton.com/#uid=13i0u0kllllaFw0g0qFqFg0w0aF*/
+
 html, body {
   margin: 0;
   padding: 0;
@@ -7,8 +9,8 @@ body {
   font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif;
   font-size: 1em;
   line-height: 1.6;
-  background-color: white;
-  color: #333;
+  background-color: #fff;
+  color: #555;
 }
 
 body > *:first-child {
@@ -17,24 +19,29 @@ body > *:last-child {
   margin-bottom: 0 !important; }
 
 .menu {
-  background: #000;
+  /*background: #000;*/
   padding: 1px 0px 0px 20px;
-  color: #999;
+  color: #333;
 }
 
 .menu h1 {
-  font-size: 3em;
+  font-size: 2em;
 }
 
 .menu a {
-  color: #fff;
+  color: green;
   text-decoration: none;
+  margin: 0 10% 0 10%;
 }
 
 .content {
+  margin: 0 10% 0 10%;
   padding: 2em;
   padding-top: 1em;
   padding-bottom: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
 ul li {
@@ -86,22 +93,22 @@ h6 tt, h6 code {
   font-size: inherit; }
 
 h1 {
-  font-size: 3em;
-  color: black; }
+  font-size: 2em;
+  color: green; }
 
 h2 {
-  font-size: 2em;
+  font-size: 1.4em;
   border-bottom: 1px solid #cccccc;
-  color: black; }
+  color: green; }
 
 h3 {
-  font-size: 1.8em; }
+  font-size: 1.3em; }
 
 h4 {
-  font-size: 1.6em; }
+  font-size: 1.2em; }
 
 h5 {
-  font-size: 1.4em; }
+  font-size: 1.1em; }
 
 h6 {
   color: #777777;
